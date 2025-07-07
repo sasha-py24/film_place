@@ -3,7 +3,6 @@ from core.models import TimeStampedMixin
 
 
 
-
 class Movie(TimeStampedMixin):
     title = models.CharField(max_length=200)
     description = models.TextField()
