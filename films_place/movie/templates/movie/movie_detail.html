@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Деталі фільму{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="back-link">
+            <a href="{% url 'movie:home' %}">← Назад до списку фільмів</a>
+        </div>
+        
+        <div class="movie-header">
+            <div class="movie-poster">
+                {% if movie.poster %}
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                {% else %}
+                    <div style="width: 100%; height: 400px; background-color: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <span>Немає постеру</span>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="movie-info">
+                <h1 class="movie-title">{{ movie.title }}</h1>
+                <div class="movie-price">{{ movie.price }} ₴</div>
+                <div class="movie-description">{{ movie.description }}</div>
+                
+                {% if user.is_authenticated %}
+                    <div class="actions">
+                        <a href="{% url 'movie:movie_update' movie.pk %}" class="btn btn-warning">Редагувати</a>
+                        <a href="{% url 'movie:movie_delete' movie.pk %}" class="btn btn-danger">Видалити</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if movie.trailer_url %}
+            <div class="movie-trailer">
+                <h3>Трейлер</h3>
+                <iframe src="{{ movie.trailer_url }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %} 

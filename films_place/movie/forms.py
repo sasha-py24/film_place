@@ -12,3 +12,7 @@ class MovieCreationForm(forms.ModelForm):
         if price < 0 or price > 10000:
             raise forms.ValidationError('price must be between 0 and 10000')
         return price
+
+
+
+        

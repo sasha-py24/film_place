@@ -1,21 +1,22 @@
+from dataclasses import field
+from re import U
 from .models import User
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+User = get_user_model()
 
-
-class UserRegistrationForm(UserCreationForm):
-    class Meta:
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'age']
-
-    def clean_age(self):
-        age = self.cleaned_data['age']
-        if age < 12:
-            raise forms.ValidationError('age must be more 12')
-        return age
+        fields = ("username", "password1", "password2")
 
 
 
 class UserLoginForm(AuthenticationForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+

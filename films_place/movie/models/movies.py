@@ -1,6 +1,6 @@
 from django.db import models
 from core.models import TimeStampedMixin
-
+from django.db.models import ImageField
 
 
 class Movie(TimeStampedMixin):
