@@ -7,7 +7,7 @@
         <div class="back-link">
             <a href="{% url 'movie:home' %}">← Назад до списку фільмів</a>
         </div>
-        
+
         <div class="movie-header">
             <div class="movie-poster">
                 {% if movie.poster %}
@@ -18,12 +18,12 @@
                     </div>
                 {% endif %}
             </div>
-            
+
             <div class="movie-info">
                 <h1 class="movie-title">{{ movie.title }}</h1>
                 <div class="movie-price">{{ movie.price }} ₴</div>
                 <div class="movie-description">{{ movie.description }}</div>
-                
+
                 {% if user.is_authenticated %}
                     <div class="actions">
                         <a href="{% url 'movie:movie_update' movie.pk %}" class="btn btn-warning">Редагувати</a>
@@ -32,7 +32,7 @@
                 {% endif %}
             </div>
         </div>
-        
+
         {% if movie.trailer_url %}
             <div class="movie-trailer">
                 <h3>Трейлер</h3>
@@ -40,4 +40,4 @@
             </div>
         {% endif %}
     </div>
-{% endblock %} 
+{% endblock %}

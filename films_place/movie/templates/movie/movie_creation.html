@@ -7,12 +7,12 @@
         <div class="back-link">
             <a href="{% url 'movie:home' %}">← Назад до списку фільмів</a>
         </div>
-        
+
         <h1 style="text-align: center; margin-bottom: 30px;">Створити новий фільм</h1>
-        
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <div class="form-group">
                 <label for="{{ form.title.id_for_label }}">Назва фільму:</label>
                 {{ form.title }}
@@ -20,7 +20,7 @@
                     <div class="error-message">{{ form.title.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.description.id_for_label }}">Опис:</label>
                 {{ form.description }}
@@ -28,7 +28,7 @@
                     <div class="error-message">{{ form.description.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.price.id_for_label }}">Ціна (₴):</label>
                 {{ form.price }}
@@ -36,7 +36,7 @@
                     <div class="error-message">{{ form.price.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.poster.id_for_label }}">Постер:</label>
                 {{ form.poster }}
@@ -44,7 +44,7 @@
                     <div class="error-message">{{ form.poster.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.trailer_url.id_for_label }}">URL трейлера (необов'язково):</label>
                 {{ form.trailer_url }}
@@ -52,11 +52,11 @@
                     <div class="error-message">{{ form.trailer_url.errors.0 }}</div>
                 {% endif %}
             </div>
-            
+
             <div style="text-align: center; margin-top: 30px;">
                 <a href="{% url 'movie:home' %}" class="btn btn-secondary">Скасувати</a>
                 <button type="submit" class="btn btn-primary">Створити фільм</button>
             </div>
         </form>
     </div>
-{% endblock %} 
+{% endblock %}

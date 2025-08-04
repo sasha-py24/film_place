@@ -5,23 +5,23 @@
 {% block content %}
     <div class="container">
         <h1>Видалити фільм</h1>
-        
+
         <div class="warning">
             <strong>Увага!</strong> Ця дія не може бути скасована.
         </div>
-        
+
         <div class="movie-info">
             <h3>{{ movie.title }}</h3>
             <p><strong>Ціна:</strong> {{ movie.price }} ₴</p>
             <p>{{ movie.description|truncatewords:20 }}</p>
         </div>
-        
+
         <p>Ви впевнені, що хочете видалити цей фільм?</p>
-        
+
         <form method="post">
             {% csrf_token %}
             <a href="{% url 'movie:movie_detail' movie.pk %}" class="btn btn-secondary">Скасувати</a>
             <button type="submit" class="btn btn-danger">Видалити</button>
         </form>
     </div>
-{% endblock %} 
+{% endblock %}

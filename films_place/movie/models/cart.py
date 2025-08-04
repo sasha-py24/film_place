@@ -1,7 +1,6 @@
 from django.db import models
-from user.models import User
 from movie.models.movies import Movie
-
+from user.models import User
 
 
 class Cart(models.Model):
