@@ -5,8 +5,18 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from .forms import MovieCreationForm
+from .forms import CartAddForm, MovieCreationForm
 from .models import Cart, Genre, Movie
+
+__all__ = [
+    "MovieListView",
+    "MovieDetailView",
+    "MovieCreationView",
+    "MovieUpdateView",
+    "MovieDeleteView",
+    "CartView",
+    "CartAddView",
+]
 
 
 class MovieListView(ListView):
@@ -65,3 +75,13 @@ class CartView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Cart.objects.filter(user=self.request.user)
+    
+
+
+class CartAddView(LoginRequiredMixin, CreateView):
+    template_name = "movie/cart_add.html"
+    form_class = CartAddForm
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)

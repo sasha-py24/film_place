@@ -1,13 +1,6 @@
 from django.urls import path
 
-from .views import (
-    CartView,
-    MovieCreationView,
-    MovieDeleteView,
-    MovieDetailView,
-    MovieListView,
-    MovieUpdateView,
-)
+from .views import *
 
 app_name = "movie"
 
@@ -19,4 +12,5 @@ urlpatterns = [
     path("movie/<int:pk>/update/", MovieUpdateView.as_view(), name="movie_update"),
     path("movie/<int:pk>/delete/", MovieDeleteView.as_view(), name="movie_delete"),
     path("cart/", CartView.as_view(), name="cart"),
+    path("cart/add/", CartAddView.as_view(), name="cart_add"),
 ]

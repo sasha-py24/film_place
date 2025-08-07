@@ -1,15 +1,18 @@
-{% extends 'base/base.html' %}
 
+{% extends 'base/base.html' %}
+{% load i18n %}
 {% block title %}Головна{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="auth-buttons">
-            <a href="{% url 'user:login' %}">Увійти</a>
-            <a href="{% url 'user:register' %}">Реєстрація</a>
-        </div>
+<div class="d-flex justify-content-end gap-2 p-3">
+    <a href="{% url 'user:login' %}" class="btn btn-success">Увійти</a>
+    <a href="{% url 'user:register' %}" class="btn btn-primary">Реєстрація</a>
+    <a href="{% url 'movie:cart' %}" class="btn btn-warning">Кошик</a>
+</div>
+        
 
-        <h1 style="text-align: center; color: #333; margin-bottom: 30px;">Movie Platform</h1>
+        <h1 style="text-align: center; color: #333; margin-bottom: 30px;">{% translate 'Movie Platform' %}</h1>
 
         <div class="search-bar">
             <form method="GET" action="{% url 'movie:home' %}">

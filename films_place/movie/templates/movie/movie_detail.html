@@ -37,6 +37,8 @@
             <div class="movie-trailer">
                 <h3>Трейлер</h3>
                 <iframe src="{{ movie.trailer_url }}" frameborder="0" allowfullscreen></iframe>
+                <a href="{% url 'movie:cart_add' movie.pk %}" class="btn btn-primary">Додати до кошику</a>
+                <a href="{% url 'movie:cart_remove' movie.pk %}" class="btn btn-danger">Вилучити з кошику</a>
             </div>
         {% endif %}
     </div>
