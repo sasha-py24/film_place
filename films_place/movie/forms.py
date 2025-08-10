@@ -16,19 +16,14 @@ class MovieCreationForm(forms.ModelForm):
         return price
 
 
-class CartAddForm(forms.Form):
+class CartAddForm(forms.ModelForm):
     class Meta:
         model = Cart
         fields = ["movies"]
 
     def __init__(self, *args, **kwargs):
-        self.instance.user = kwargs.pop('user', None)
-        self.instance.temp_user = kwargs.pop('temp_user', None)
-        self.product = kwargs.pop('product')
+        self.request = kwargs.pop("request", None)
         super().__init__(*args, **kwargs)
-        self.instance.temp_user = self.temp_user
-        self.instance.user = self.user
-        self.instance.product = self.product
 
 
     def clean_movies(self):

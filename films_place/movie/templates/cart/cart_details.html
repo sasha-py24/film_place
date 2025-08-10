@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Деталі фільму{% endblock %}
+
+{% block content %}
+
+<div class="back-link">
+  <a href="{% url 'movie:home' %}">← Назад до списку фільмів</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <div class="card">
+      {% if movie.poster %}
+          <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" style="width: 100%; height: 500px;">
+      {% else %}
+          <div style="width: 100%; height: 400px; background-color: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+              <span>Немає постеру</span>
+          </div>
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ movie.title }}</h5>
+            <p class="card-text">{{ movie.description }}</p>
+            <p class="card-text">{{ movie.price }} ₴</p>
+            {% if user.is_authenticated %}
+    <div class="actions">
+      {% for movie in movies %}
+            {{ movie.title }}
+              <a href="{% url 'movie:movie_update' movie.pk %}" class="btn btn-danger">Редагувати</a>
+              <a href="{% url 'movie:movie_delete' movie.pk %}" class="btn btn-danger">Видалити</a>
+
+      {% endfor %}
+    </div>
+    
+{% endif %}
+</div>
+</div>
+{% if movie.trailer_url %}
+<div class="movie-trailer">
+<h3>Трейлер</h3>
+<iframe src="{{ movie.trailer_url }}" frameborder="0" allowfullscreen></iframe>
+</div>
+{% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+
+
+
+
+

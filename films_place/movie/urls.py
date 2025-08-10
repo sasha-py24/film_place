@@ -12,5 +12,7 @@ urlpatterns = [
     path("movie/<int:pk>/update/", MovieUpdateView.as_view(), name="movie_update"),
     path("movie/<int:pk>/delete/", MovieDeleteView.as_view(), name="movie_delete"),
     path("cart/", CartView.as_view(), name="cart"),
-    path("cart/add/", CartAddView.as_view(), name="cart_add"),
+    path('cart/add/<int:pk>/', CartAddView.as_view(), name='cart_add'),
+    path('cart/remove/<int:pk>/', CartRemoveView.as_view(), name='cart_remove'),
+
 ]

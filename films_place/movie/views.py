@@ -16,6 +16,7 @@ __all__ = [
     "MovieDeleteView",
     "CartView",
     "CartAddView",
+    "CartRemoveView",
 ]
 
 
@@ -69,19 +70,32 @@ class MovieDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class CartView(LoginRequiredMixin, ListView):
-    template_name = "movie/cart.html"
-    model = Cart
-    context_object_name = "cart_items"
+    template_name = "cart/cart_details.html"
+    model = Movie  # тепер модель — Movie
+    context_object_name = "movies"
 
     def get_queryset(self):
-        return Cart.objects.filter(user=self.request.user)
-    
+        cart = Cart.objects.filter(user=self.request.user).first()
+        if cart:
+            return cart.movies.all()
+        return Movie.objects.none()
+
 
 
 class CartAddView(LoginRequiredMixin, CreateView):
-    template_name = "movie/cart_add.html"
+    template_name = "cart/cart_details.html"
     form_class = CartAddForm
     success_url = "/"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+
+class CartRemoveView(LoginRequiredMixin, CreateView):
+    template_name = "cart/cart_details.html"
+    form_class = CartAddForm
+    success_url = '/'
+
+
+
+        
