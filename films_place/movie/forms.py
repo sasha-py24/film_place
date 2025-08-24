@@ -25,7 +25,6 @@ class CartAddForm(forms.ModelForm):
         self.request = kwargs.pop("request", None)
         super().__init__(*args, **kwargs)
 
-
     def clean_movies(self):
         movies = self.cleaned_data["movies"]
         if movies.count() > 10:
@@ -38,4 +37,3 @@ class CartAddForm(forms.ModelForm):
         if commit:
             cart.save()
         return cart
-

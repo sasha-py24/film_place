@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+from django.urls import reverse
 
 from .forms import CartAddForm, MovieCreationForm
 from .models import Cart, Genre, Movie
@@ -71,7 +72,7 @@ class MovieDeleteView(LoginRequiredMixin, DeleteView):
 
 class CartView(LoginRequiredMixin, ListView):
     template_name = "cart/cart_details.html"
-    model = Movie  # тепер модель — Movie
+    model = Movie
     context_object_name = "movies"
 
     def get_queryset(self):
@@ -79,23 +80,52 @@ class CartView(LoginRequiredMixin, ListView):
         if cart:
             return cart.movies.all()
         return Movie.objects.none()
-
-
-
-class CartAddView(LoginRequiredMixin, CreateView):
-    template_name = "cart/cart_details.html"
-    form_class = CartAddForm
-    success_url = "/"
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        cart = Cart.objects.filter(user=self.request.user).first()
+        if cart:
+            total_price = sum(movie.price for movie in cart.movies.all())
+            context['total_price'] = total_price
+        else:
+            context['total_price'] = 0
+        return context
 
 
-class CartRemoveView(LoginRequiredMixin, CreateView):
+class CartAddView(LoginRequiredMixin, TemplateView):
+
+
+    def get(self, request, *args, **kwargs):
+        movie_id = self.kwargs.get('pk')
+        try:
+            movie = Movie.objects.get(pk=movie_id)
+            cart, created = Cart.objects.get_or_create(user=request.user)
+            cart.movies.add(movie)
+            return redirect('movie:cart')
+        except Movie.DoesNotExist:
+            return redirect('movie:home')
+
+
+class CartRemoveView(LoginRequiredMixin, TemplateView):
     template_name = "cart/cart_details.html"
-    form_class = CartAddForm
-    success_url = '/'
-
-
-
-        
+    success_url = "/cart"
+    
+    def get(self, request, *args, **kwargs):
+        movie_id = self.kwargs.get('pk')
+        movie = Movie.objects.get(pk=movie_id)
+        cart = Cart.objects.filter(user=request.user).first()
+        if cart and movie in cart.movies.all():
+            cart.movies.remove(movie)
+        return redirect('movie:cart')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart = Cart.objects.filter(user=self.request.user).first()
+        if cart:
+            context['movies'] = cart.movies.all()
+            total_price = sum(movie.price for movie in cart.movies.all())
+            context['total_price'] = total_price
+        else:
+            context['movies'] = []
+            context['total_price'] = 0
+        return context
