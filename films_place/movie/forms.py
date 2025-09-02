@@ -1,5 +1,7 @@
 from django import forms
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+import os
 
 from .models import Movie, Cart
 from user.models import TempUser, User
@@ -32,21 +34,29 @@ class CartAddForm(forms.ModelForm):
             raise forms.ValidationError("You can add up to 10 movies to the cart")
         return movies
 
-    def save(self, commit=True):
-        cart = super().save(commit=False)
-        if self.request and self.request.user.is_authenticated:
-            cart.user = self.request.user
+def save(self, commit=True):
+    cart = super().save(commit=False)
+    if self.request and self.request.user.is_authenticated:
+        cart.user = self.request.user
 
-            # Відправка листа
-            send_mail(
-                subject="New Order Received",
-                message=f"User {self.request.user.username} placed an order with {cart.movies.count()} movie(s).",
-                from_email="trankosergij@gmail.com",
-                recipient_list=["sakuzpol@gmail.com"],
-                fail_silently=False,
-            )
+        # Формуємо HTML-лист для користувача
+        subject = "Ваше замовлення прийнято!"
+        message = render_to_string("email_order.html", {
+            "user": self.request.user,
+            "cart": cart,
+        })
 
-        if commit:
-            cart.save()
-            self.save_m2m()  
-        return cart
+        # Відправляємо на пошту користувача
+        send_mail(
+            subject=subject,
+            message="",
+            from_email=os.environ['EMAIL_HOST_USER'],
+            recipient_list=[self.request.user.email],  # <-- сюди йде email користувача
+            html_message=message,  # HTML-версія листа
+            fail_silently=False,
+        )
+
+    if commit:
+        cart.save()
+        self.save_m2m()  
+    return cart
