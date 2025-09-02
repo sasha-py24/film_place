@@ -5,9 +5,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django.urls import reverse
+from django.core.mail import send_mail
 
 from .forms import CartAddForm, MovieCreationForm
 from .models import Cart, Genre, Movie
+
 
 __all__ = [
     "MovieListView",
@@ -38,6 +40,7 @@ class MovieListView(ListView):
         context = super().get_context_data(**kwargs)
         context["query"] = self.request.GET.get("q", "")
         return context
+    
 
 
 class MovieDetailView(DetailView):
@@ -93,7 +96,6 @@ class CartView(LoginRequiredMixin, ListView):
 
 
 class CartAddView(LoginRequiredMixin, TemplateView):
-
 
     def get(self, request, *args, **kwargs):
         movie_id = self.kwargs.get('pk')

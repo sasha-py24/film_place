@@ -1,4 +1,5 @@
 from django import forms
+from django.core.mail import send_mail
 
 from .models import Movie, Cart
 from user.models import TempUser, User
@@ -33,7 +34,19 @@ class CartAddForm(forms.ModelForm):
 
     def save(self, commit=True):
         cart = super().save(commit=False)
-        cart.user = self.request.user
+        if self.request and self.request.user.is_authenticated:
+            cart.user = self.request.user
+
+            # Відправка листа
+            send_mail(
+                subject="New Order Received",
+                message=f"User {self.request.user.username} placed an order with {cart.movies.count()} movie(s).",
+                from_email="trankosergij@gmail.com",
+                recipient_list=["sakuzpol@gmail.com"],
+                fail_silently=False,
+            )
+
         if commit:
             cart.save()
+            self.save_m2m()  
         return cart

@@ -28,7 +28,7 @@
 
             </div>
           </div>
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and user.is_staff %}
           <div class="actions">
               <a href="{% url 'movie:movie_update' movie.pk %}" class="btn btn-warning">Редагувати</a>
               <a href="{% url 'movie:movie_delete' movie.pk %}" class="btn btn-danger">Видалити</a>
